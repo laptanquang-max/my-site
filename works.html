@@ -1,0 +1,137 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <meta name="description" content="周万里的个人作品集 · 产品设计、AI 与可持续设计。" />
+  <title>周万里 · 作品</title>
+  <link rel="stylesheet" href="style.css">
+</head>
+<body>
+  <script>
+    // 在内容绘制前恢复主题；存储不可用时仍可正常切换。
+    try { document.body.classList.toggle('dark', localStorage.getItem('portfolio-theme') === 'dark'); } catch (_) {}
+  </script>
+  <canvas id="particles" aria-hidden="true"></canvas>
+  <header class="site-header">
+    <nav aria-label="主导航">
+      <a href="index.html">首页</a>
+      <a href="works.html" aria-current="page">作品</a>
+      <a href="about.html">关于</a>
+    </nav>
+    <button id="themeToggle" class="theme-toggle" type="button" aria-label="切换深色模式" aria-pressed="false">🌙</button>
+  </header>
+  <main class="works-page">
+    <p class="eyebrow">作品</p>
+    <h1>周万里</h1>
+    <section class="page-content project" aria-labelledby="zero-limit-title">
+      <img class="project-hero" src="images/zero-limit/page-01.jpg" width="1600" height="900" alt="零界赛后修复拖鞋主图：白色流线鞋身、绿色鞋床与镂空结构" fetchpriority="high" />
+      <div class="project-intro">
+        <h2 id="zero-limit-title">零界</h2>
+        <p>运动员赛后修复拖鞋 —— 让激烈比赛之后的双脚，立刻松弛下来。</p>
+      </div>
+      <div class="project-gallery">
+        <img src="images/zero-limit/page-03.jpg" width="1600" height="900" alt="零界效果图：运动员在更衣室穿着拖鞋，展示赛后换鞋与放松场景" loading="lazy" decoding="async" />
+        <img src="images/zero-limit/page-06.jpg" width="1600" height="900" alt="零界效果图：流线鞋身的设计草图、材质参考与产品造型" loading="lazy" decoding="async" />
+        <img src="images/zero-limit/page-09.jpg" width="1600" height="900" alt="零界穿着细节：赛后脱下运动鞋、换上拖鞋并进行放松拉伸" loading="lazy" decoding="async" />
+      </div>
+    </section>
+    <section class="page-content project" aria-labelledby="corner-wing-title">
+      <img class="project-hero" src="images/work-2.jpg" width="1055" height="1491" alt="隅翼卫浴花洒整体结构：墙角双翼花洒展开与折叠状态、控台和置物架" loading="lazy" decoding="async" />
+      <div class="project-intro">
+        <h2 id="corner-wing-title">隅翼</h2>
+        <p>隅翼 · 小户型悦己卫浴 —— 用科技感，把狭小卫生间里被浪费的角落，变成享受的一角。</p>
+      </div>
+      <div class="project-gallery">
+        <img src="images/work-3.jpg" width="1055" height="1491" alt="隅翼附件细节展示：花洒折叠收纳、控台操作、双翼展开及手持花洒模式切换" loading="lazy" decoding="async" />
+      </div>
+    </section>
+    <section class="page-content project" aria-labelledby="cloud-jelly-title">
+      <img class="project-hero" src="images/work-4.jpg" width="1402" height="1122" alt="云母睡前舒压助眠产品展板：水母造型抱枕、柔和呼吸灯、产品细节与睡前抱靠场景" loading="lazy" decoding="async" />
+      <div class="project-intro">
+        <h2 id="cloud-jelly-title">云母</h2>
+        <p>云母 · 睡前舒压助眠产品 —— 帮你在睡前松开一天紧绷的神经，安稳入睡。</p>
+      </div>
+    </section>
+  </main>
+  <script>
+    // 浅色粒子与深色萤火虫。
+    const canvas = document.getElementById('particles');
+    const ctx = canvas.getContext('2d');
+    const reducedMotion = window.matchMedia('(prefers-reduced-motion: reduce)');
+    const N = 32;
+    let particles = [];
+
+    function resize() {
+      canvas.width = window.innerWidth;
+      canvas.height = window.innerHeight;
+    }
+    window.addEventListener('resize', resize);
+    resize();
+
+    for (let i = 0; i < N; i++) {
+      particles.push({
+        x: Math.random() * canvas.width,
+        y: Math.random() * canvas.height,
+        r: Math.random() * 2 + 0.6,
+        vx: (Math.random() - 0.5) * 0.35,
+        vy: (Math.random() - 0.5) * 0.35,
+        a: Math.random() * 0.45 + 0.15,
+      });
+    }
+
+    function draw() {
+      ctx.clearRect(0, 0, canvas.width, canvas.height);
+      const dark = document.body.classList.contains('dark');
+      const t = performance.now() / 1000;
+      for (let i = 0; i < particles.length; i++) {
+        const p = particles[i];
+        if (!reducedMotion.matches) {
+          p.x += p.vx;
+          p.y += p.vy;
+        }
+        if (p.x < 0 || p.x > canvas.width) p.vx *= -1;
+        if (p.y < 0 || p.y > canvas.height) p.vy *= -1;
+
+        if (dark) {
+          // 夜晚：萤火虫——暖黄绿 + 呼吸式明灭 + 光晕
+          const blink = reducedMotion.matches ? 0.3 : 0.5 + 0.5 * Math.sin(t * 1.6 + i);
+          const alpha = Math.min(0.2 + 0.6 * blink, 0.9);
+          ctx.beginPath();
+          ctx.arc(p.x, p.y, p.r * 1.1, 0, Math.PI * 2);
+          ctx.fillStyle = 'rgba(205, 235, 120, ' + alpha + ')';
+          ctx.shadowBlur = 14;
+          ctx.shadowColor = 'rgba(205, 235, 120, 0.85)';
+          ctx.fill();
+          ctx.shadowBlur = 0;
+        } else {
+          // 白天：浅蓝小点
+          ctx.beginPath();
+          ctx.arc(p.x, p.y, p.r, 0, Math.PI * 2);
+          ctx.fillStyle = 'rgba(110, 160, 210, ' + p.a + ')';
+          ctx.fill();
+        }
+      }
+      requestAnimationFrame(draw);
+    }
+    draw();
+
+    const toggle = document.getElementById('themeToggle');
+    function applyTheme(dark) {
+      document.body.classList.toggle('dark', dark);
+      toggle.textContent = dark ? '☀️' : '🌙';
+      toggle.setAttribute('aria-label', dark ? '切换浅色模式' : '切换深色模式');
+      toggle.setAttribute('aria-pressed', String(dark));
+    }
+    applyTheme(document.body.classList.contains('dark'));
+    toggle.addEventListener('click', () => {
+      const dark = !document.body.classList.contains('dark');
+      applyTheme(dark);
+      try { localStorage.setItem('portfolio-theme', dark ? 'dark' : 'light'); } catch (_) {}
+    });
+    window.addEventListener('storage', (event) => {
+      if (event.key === 'portfolio-theme') applyTheme(event.newValue === 'dark');
+    });
+  </script>
+</body>
+</html>
