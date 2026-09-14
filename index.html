@@ -26,68 +26,8 @@
     <p>产品设计专业 · 在学 AI 和可持续设计</p>
     <div class="mark">MADE WITH AI · 我的第一个页面</div>
   </main>
+  <script src="particles.js"></script>
   <script>
-    // 浅色粒子与深色萤火虫。
-    const canvas = document.getElementById('particles');
-    const ctx = canvas.getContext('2d');
-    const reducedMotion = window.matchMedia('(prefers-reduced-motion: reduce)');
-    const N = 32;
-    let particles = [];
-
-    function resize() {
-      canvas.width = window.innerWidth;
-      canvas.height = window.innerHeight;
-    }
-    window.addEventListener('resize', resize);
-    resize();
-
-    for (let i = 0; i < N; i++) {
-      particles.push({
-        x: Math.random() * canvas.width,
-        y: Math.random() * canvas.height,
-        r: Math.random() * 2 + 0.6,
-        vx: (Math.random() - 0.5) * 0.35,
-        vy: (Math.random() - 0.5) * 0.35,
-        a: Math.random() * 0.45 + 0.15,
-      });
-    }
-
-    function draw() {
-      ctx.clearRect(0, 0, canvas.width, canvas.height);
-      const dark = document.body.classList.contains('dark');
-      const t = performance.now() / 1000;
-      for (let i = 0; i < particles.length; i++) {
-        const p = particles[i];
-        if (!reducedMotion.matches) {
-          p.x += p.vx;
-          p.y += p.vy;
-        }
-        if (p.x < 0 || p.x > canvas.width) p.vx *= -1;
-        if (p.y < 0 || p.y > canvas.height) p.vy *= -1;
-
-        if (dark) {
-          // 夜晚：萤火虫——暖黄绿 + 呼吸式明灭 + 光晕
-          const blink = reducedMotion.matches ? 0.3 : 0.5 + 0.5 * Math.sin(t * 1.6 + i);
-          const alpha = Math.min(0.2 + 0.6 * blink, 0.9);
-          ctx.beginPath();
-          ctx.arc(p.x, p.y, p.r * 1.1, 0, Math.PI * 2);
-          ctx.fillStyle = 'rgba(205, 235, 120, ' + alpha + ')';
-          ctx.shadowBlur = 14;
-          ctx.shadowColor = 'rgba(205, 235, 120, 0.85)';
-          ctx.fill();
-          ctx.shadowBlur = 0;
-        } else {
-          // 白天：浅蓝小点
-          ctx.beginPath();
-          ctx.arc(p.x, p.y, p.r, 0, Math.PI * 2);
-          ctx.fillStyle = 'rgba(110, 160, 210, ' + p.a + ')';
-          ctx.fill();
-        }
-      }
-      requestAnimationFrame(draw);
-    }
-    draw();
-
     const toggle = document.getElementById('themeToggle');
     function applyTheme(dark) {
       document.body.classList.toggle('dark', dark);
