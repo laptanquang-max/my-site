@@ -19,7 +19,13 @@
       <a href="works.html">作品</a>
       <a href="about.html">关于</a>
     </nav>
-    <button id="themeToggle" class="theme-toggle" type="button" aria-label="切换深色模式" aria-pressed="false">🌙</button>
+    <div class="header-actions">
+      <button id="themeToggle" class="theme-toggle" type="button" aria-label="切换深色模式" aria-pressed="false"><span class="icon" aria-hidden="true">🌙</span><span class="tip" role="tooltip">切换深色</span></button>
+      <a class="contact-link" href="contact.html" aria-label="联系我 · 查看邮箱">
+        <span class="icon-cloud" aria-hidden="true">☁️</span><span class="icon-star" aria-hidden="true">⭐</span>
+        <span class="tip" role="tooltip">联系我 · 查看邮箱</span>
+      </a>
+    </div>
   </header>
   <main>
     <h1>周万里</h1>
@@ -31,7 +37,8 @@
     const toggle = document.getElementById('themeToggle');
     function applyTheme(dark) {
       document.body.classList.toggle('dark', dark);
-      toggle.textContent = dark ? '☀️' : '🌙';
+      toggle.querySelector('.icon').textContent = dark ? '☀️' : '🌙';
+      toggle.querySelector('.tip').textContent = dark ? '切换浅色' : '切换深色';
       toggle.setAttribute('aria-label', dark ? '切换浅色模式' : '切换深色模式');
       toggle.setAttribute('aria-pressed', String(dark));
     }

@@ -15,17 +15,17 @@
     #particles { position: fixed; inset: 0; width: 100%; height: 100%; z-index: 0; pointer-events: none; }
     .site-header {
       position: relative;
-      z-index: 1;
+      z-index: 3;
       width: 100%;
       max-width: 1088px;
       margin: 0 auto;
       padding: 22px 32px;
       display: flex;
-      align-items: center;
+      align-items: flex-start;
       justify-content: flex-end;
       gap: 32px;
     }
-    nav { display: flex; align-items: center; gap: 32px; }
+    nav { display: flex; align-items: center; gap: 32px; min-height: 44px; }
     a { color: inherit; text-decoration: none; }
     nav a { color: #555; padding: 6px 0; border-bottom: 1px solid transparent; }
     nav a:hover, nav a[aria-current="page"] { color: #1a1a1a; border-bottom-color: currentColor; }
@@ -92,4 +92,50 @@
       .project-gallery { grid-template-columns: 1fr; }
     }
     @media (prefers-reduced-motion: reduce) { body { transition: none; } }
-  
+
+    /* 联系入口：主题切换按钮下方 */
+    .header-actions { display: flex; flex-direction: column; align-items: center; gap: 12px; }
+    .contact-link {
+      flex: 0 0 44px;
+      width: 44px; height: 44px;
+      display: inline-flex; align-items: center; justify-content: center;
+      border: 1px solid #bdcdd8;
+      border-radius: 50%;
+      background: rgba(255, 255, 255, 0.55);
+      font-size: 18px;
+      line-height: 1;
+    }
+    .contact-link .icon-star { display: none; }
+    body.dark .contact-link { background: rgba(56, 47, 80, 0.75); border-color: #4a3f66; }
+    body.dark .contact-link .icon-cloud { display: none; }
+    body.dark .contact-link .icon-star { display: inline; }
+
+    /* 联系页的邮箱 */
+    .contact-list { display: flex; flex-direction: column; align-items: center; gap: 6px; }
+    .contact-list .email { color: #426a8a; border-bottom: 1px solid currentColor; word-break: break-all; }
+    .contact-list .email:hover { color: #1a1a1a; }
+    body.dark .contact-list .email { color: #cddd92; }
+    body.dark .contact-list .email:hover { color: #f0ecf7; }
+
+    /* 联系图标的悬停提示（鼠标放上去才出现） */
+    .contact-link, .theme-toggle { position: relative; }
+    .contact-link .tip, .theme-toggle .tip {
+      position: absolute;
+      top: calc(100% + 10px);
+      right: 0;
+      z-index: 5;
+      transform: translateY(-4px);
+      white-space: nowrap;
+      font-size: 12px;
+      line-height: 1.4;
+      padding: 5px 10px;
+      border-radius: 6px;
+      background: rgba(26, 26, 26, 0.88);
+      color: #ffffff;
+      opacity: 0;
+      pointer-events: none;
+      transition: opacity 0.2s ease, transform 0.2s ease;
+    }
+    .contact-link:hover .tip, .contact-link:focus-visible .tip,
+    .theme-toggle:hover .tip, .theme-toggle:focus-visible .tip { opacity: 1; transform: translateY(0); }
+    body.dark .contact-link .tip, body.dark .theme-toggle .tip { background: rgba(240, 236, 247, 0.92); color: #211a38; }
