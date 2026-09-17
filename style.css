@@ -139,3 +139,9 @@
     .contact-link:hover .tip, .contact-link:focus-visible .tip,
     .theme-toggle:hover .tip, .theme-toggle:focus-visible .tip { opacity: 1; transform: translateY(0); }
     body.dark .contact-link .tip, body.dark .theme-toggle .tip { background: rgba(240, 236, 247, 0.92); color: #211a38; }
+
+    /* 触屏设备没有"悬停"：不显示提示，避免点击后残留、遮挡画面 */
+    @media (hover: none) {
+      .contact-link .tip,
+      .theme-toggle .tip { display: none; }
+    }
